@@ -45,16 +45,28 @@ def Crop(img, path):
 
     cropped_h = height - dy
     cropped_w = width - dx
+    
+    cropped = img
 
-    if closest_intersection_index == 1:
-        cropped = img[0:cropped_h, -cropped_w:]
-    elif closest_intersection_index == 0:
-        cropped = img[0:cropped_h, 0:cropped_w]
-    elif closest_intersection_index == 3:
-        cropped = img[-cropped_h:, -cropped_w:]
-    elif closest_intersection_index == 2:
-        cropped = img[-cropped_h:, 0:cropped_w]
+    if path == "models/haarcascade_eye.xml":
+        match closest_intersection_index:
+            case 0:
+                cropped = img[0:cropped_h, 0:cropped_w]
+            case 1:
+                cropped = img[0:cropped_h, -cropped_w:]
+            case 2:
+                cropped = img[0:cropped_h, 0:cropped_w]
+            case 3:
+                cropped = img[0:cropped_h, -cropped_w:]
     else:
-        cropped = img
+        match closest_intersection_index:
+            case 0:
+                cropped = img[0:cropped_h, 0:cropped_w]
+            case 1:
+                cropped = img[0:cropped_h, -cropped_w:]
+            case 2:
+                cropped = img[-cropped_h:, 0:cropped_w]
+            case 3:
+                cropped = img[-cropped_h:, -cropped_w:]
 
     return (cropped, eye_detected)
