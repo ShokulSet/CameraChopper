@@ -1,14 +1,24 @@
 import cv2
 
-def Crop(img,path):
+def Crop(img, path):
     height, width, _ = img.shape
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     eye_cascade = cv2.CascadeClassifier(path)
     eyes = eye_cascade.detectMultiScale(gray, 1.3, 1)
 
-    for (x,y,w,h) in eyes:
-        desired_position = (int(x+w/2),int(y+h/2))
+    eye_detected = False
+    x, y, w, h = 0, 0, 0, 0  # Default values
+
+    for (x_, y_, w_, h_) in eyes:
+        x, y, w, h = x_, y_, w_, h_
+        eye_detected = True
         break
+
+    # If no eyes were detected, set desired_position to the center of the image
+    if not eye_detected:
+        x, y, w, h = width // 2, height // 2, 1, 1
+
+    desired_position = (int(x + w / 2), int(y + h / 2))
 
     third_width = width // 3
     third_height = height // 3
@@ -47,4 +57,4 @@ def Crop(img,path):
     else:
         cropped = img
 
-    return cropped
+    return (cropped, eye_detected)
