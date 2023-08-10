@@ -36,7 +36,7 @@ def app():
                     st.image(img_list[i], channels="BGR")
     else:
         st.subheader("Please input your image")
+        
 # Run the app
 if __name__ == "__main__":
     app()
-
